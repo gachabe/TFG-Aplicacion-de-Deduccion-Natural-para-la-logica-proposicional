@@ -1,0 +1,6 @@
+AQUI PONDRÉ UNA LISTA DE LOS BUGS QUE SE QUE EXISTEN PERO AUN NO HE PODIDO ARREGLAR
+
+- Por como esta definido podria darse formulas raras como (contradiccion & p) hay que arreglarlo
+
+- Creo que al abrir asunciones no se guarda el antecedente como formula
++ He probado y no es ese el problema, esperemos que no salga mucho o si sale encontrar el error
