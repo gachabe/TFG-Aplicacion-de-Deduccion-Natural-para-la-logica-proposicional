@@ -228,8 +228,10 @@ class Premisas:
 
     def intr_disy1_inv(self,conclusion):
         f = self.premisas[conclusion]
-        return self.une(f.izq)
-
+        if f.es_disy():
+            return self.une(f.izq)
+        else:
+            raise Exception("Eso no era una disyunción")
 
     def intr_disy2(self, premisa, premisaN):
         """
