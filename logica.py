@@ -146,8 +146,6 @@ class Premisas:
 
         del self.premisas[key]
 
-
-
     def __setitem__(self, i, formula):
         if type(formula) == Formula:
             self.premisas[i] = formula
@@ -159,12 +157,9 @@ class Premisas:
         return "{" + ', '.join(map(str, (self.premisas))) + "}"
 
     def une(self, f):
-        """ Dado un conjunto de premisas le añadimos otra Formula """
+        """ Dado un conjunto de premisas le introducimos otra Formula """
         self.premisas = self.premisas + [f]
         return self
-
-    def borra(self, premisa):
-        self.premisas.pop(premisa)
 
     def variables(self):
         vars = []
@@ -226,9 +221,8 @@ class Premisas:
 #   DISYUNCIÓN
     def intr_disy1(self,premisa,premisaN):
         """
-        
     Devuelve la premisa elegida en el lado izquierdo de una disyunción con una premisa escrita en el previo
-        """""
+        """
         f = self.premisas[premisa]
         return self.une(Formula("|",f,premisaN))
 
@@ -239,9 +233,8 @@ class Premisas:
 
     def intr_disy2(self, premisa, premisaN):
         """
-
      Devuelve la premisa elegida en el lado derecho de una disyunción con una premisa escrita en el previo
-        """""
+        """
         f = self.premisas[premisa]
         return self.une(Formula("|",premisaN,f))
 
@@ -260,8 +253,6 @@ class Premisas:
         f2 = [i for i in[self.premisas[premisa1],self.premisas[premisa2],self.premisas[premisa3]] if not i.es_disy()][1]
         v1 = f.izq
         v2 = f.der
-
-
         if f.es_disy() and f1.es_impl() and f2.es_impl() :
             if v1 == f1.izq and v2 == f2.izq and f1.der == f2.der:
                     return self.une(f2.der)

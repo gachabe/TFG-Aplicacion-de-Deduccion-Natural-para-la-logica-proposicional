@@ -209,7 +209,7 @@ class Interfaz(Frame):
                         estado = False
                     else:
 
-                        self.historial1.borra(-2)
+                        del self.historial1[-2]
                         self.textopantalla[-i] = str(self.textopantalla[-i])
                         i += 1
                 self.asmpt += -1
