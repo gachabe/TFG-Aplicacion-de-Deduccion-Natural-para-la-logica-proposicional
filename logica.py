@@ -245,11 +245,6 @@ class Premisas:
         return self.une(f.der)
 
     def elim_disy(self, premisa1, premisa2,premisa3):
-        """
-        :param premisa1: posicion de la disyuncion a trabajar
-
-        :return: un elemento a partir de eliminar una disyuncion
-        """
         f = [i for i in[self.premisas[premisa1],self.premisas[premisa2],self.premisas[premisa3]] if i.es_disy()][0]
         f1 = [i for i in[self.premisas[premisa1],self.premisas[premisa2],self.premisas[premisa3]] if not i.es_disy()][0]
         f2 = [i for i in[self.premisas[premisa1],self.premisas[premisa2],self.premisas[premisa3]] if not i.es_disy()][1]
@@ -265,11 +260,6 @@ class Premisas:
 
 
     def elim_disy_inv(self,conclusion, conclusionN):
-        """
-        :param conclusion: Conclusion de la que partimos hacia atras
-        :param conclusionN: Disyuncion escrita en la previa
-        :return:
-        """
         if conclusionN.es_disy():
             f1 = conclusionN.izq
             f2 = conclusionN.der
@@ -283,15 +273,9 @@ class Premisas:
 
 
     # IMPLICACIÓN
+
     def intr_impl(self,asuncion,conclusion):
-        """
-
-        Como nose hacerlo de otra forma cuando cerramos el cuadrado de asuncion usaremos este comando para borrar la
-        asuncion de las premisas y la conclusión y añadir Formula := asuncion -> conclusion
-        """
         self.une(Formula(">",asuncion,conclusion))
-
-
 
     def elim_impl(self,implicacion,consecuente):
         f1 = self.premisas[implicacion]
@@ -319,7 +303,7 @@ class Premisas:
         else:
             raise Exception("Premisas equivocadas")
 
-    def elim_neg_inv(self,conclusion,premisaN): #Esta regla no se si es util hacia atras
+    def elim_neg_inv(self,conclusion,premisaN):
         f = self.premisas[conclusion]
         if f == Formula("\u22A5"):
             self.une(Formula("¬" ,premisaN))
@@ -337,7 +321,10 @@ class Premisas:
 
     def intr_neg_inv(self,conclusion):
         f = self.premisas[conclusion]
-        return self.une(Formula(">",Formula("¬",f),Formula("\u22A5")))
+        if f.es_neg():
+            return self.une(Formula(">",f.der,Formula("\u22A5")))
+        else:
+            raise Exception("Eso no era una negación")
 
     def elim_contr(self,premisa,premisaN):
         f = self.premisas[premisa]
@@ -380,8 +367,6 @@ class Premisas:
                 self.une(Formula(">",Formula("¬",f),premisaN))
                 self.une(Formula("¬",premisaN))
                 return
-
-
         else:
             raise Exception("No puede aplicarse modus Tollens sin una negación")
 
@@ -405,11 +390,6 @@ class Premisas:
 
 
 def buscaraiz(string):
-    """
-    Funcion auxiliar para el traductor de escritura humana a Formula, esta funcion buscara el operador que
-    actua como raiz del grafo arbol de la Formula
-
-    """
     if string[0] == "¬":
         indice = 2
         Nparentesis = 1
@@ -441,17 +421,8 @@ def buscarraizfinal(string):
         else:
             indice += 1
     return indice
-
-
-
-
 def traductor(formula):
-    """
 
-    :param formula: String de la fórmula en escritura normal
-    :return: traduccion al tipo Formula para poder hacer los calculos
-
-    """
     if len(formula) == 1:
         return Formula(formula)
     elif formula[0] == "¬":

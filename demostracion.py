@@ -19,9 +19,9 @@ class Interfaz(Frame):
         # Inicializar la ventana con un título y colocar un frame donde almacenar los widgets
         self.ventana = ventana
         self.ventana.title("Gabrielle")
-        self.ventana.rowconfigure(3, weight=2)
-        self.ventana.rowconfigure(4, weight=2)
-        self.ventana.rowconfigure(5, weight=2)
+        self.ventana.rowconfigure(3, weight=1)
+        self.ventana.rowconfigure(4, weight=1)
+        self.ventana.rowconfigure(5, weight=1)
 
         # creacion de la barra de menu
         self.menu = Menu(self.ventana)
@@ -30,15 +30,11 @@ class Interfaz(Frame):
         self.opciones = Menu(self.menu, tearoff=False,relief="raised")
         self.opciones.add_command(
             label='Reinicio', command=self.reinicio)
-        self.opciones.add_command(label="Nueva Dem")
         self.menu.add_cascade(
             label="Opciones",
             menu=self.opciones
         )
-
-        #self.ventana.geometry("1400x720")
         self.frame = Frame(self.ventana)
-        #self.frame.config(width=1080, height=600)
         self.frame.pack(side=TOP, fill=BOTH, expand=True)
         for i in range(6):
             self.frame.grid_rowconfigure(i, weight=1)
@@ -46,42 +42,35 @@ class Interfaz(Frame):
             self.frame.grid_columnconfigure(i, weight=1)
 
         # VARIABLES AUXLIARES
-        self.tprevia = ""  #texto que esta en la previa
-        self.historial1 = premisas  # Lleva un registro de las premisas hasta ahora, hacia delante, es un objeto Premisa
-        self.historial2 = Premisas(conclusion)  # Lleva un registro de las premisas hacia atrás
-        self.objetivo = [conclusion]  #La formulas que aun faltan por probar
-
+        self.tprevia = ""
+        self.historial1 = premisas
+        self.historial2 = Premisas(conclusion)
+        self.objetivo = [conclusion]
         self.copiaH1 = deepcopy(self.historial1)
         self.copiaH2 = deepcopy(conclusion)
         self.copiaObj = [conclusion]
-
-        self.asmpt = 0  # contador de asunciones
-        self.textopantalla = [i for i in self.historial1] #una lista con los strings y Formulas a usar en pantalla
-
+        self.asmpt = 0
+        self.textopantalla = [i for i in self.historial1]
         self.textopantalla2 = [i for i in self.historial2]
-        self.asunciones = Premisas() # Lugar donde iremos colocando las premisas asumidas
+        self.asunciones = Premisas()
         self.checkbox = {}
-        self.variables = {}
+        self.variableas = {}
         self.checkbox2 = {}
         self.variables2 = {}
 
 
     #Contruccion de pantallas
         # Agregar la pantalla donde se irán mostrando los cálculos hacia delante
-
-
         self.pantalla = Text(self.frame, width=50, height=altura, background="lightgoldenrod4",
                                      foreground="black", font=("Helvetica", 15),cursor="arrow")
-        #self.scroll = Scrollbar(self.prueba, orient=VERTICAL)
-        #self.scroll.config(command=self.pantalla.yview)
-        #self.scroll.pack(side=RIGHT, fill=Y)
-
-
-
         # Ubicar la pantalla en la ventana
         self.pantalla.grid(row=0, column=0, columnspan=15, padx=(5, 5), pady=0, sticky='WSNE')
+        # Agregar una pantalla lateral donde ver las variables y poder seleccionarlas
+        self.vars = Text(self.frame, state="disabled", width=3, height=altura, background="lightgoldenrod2",
+                         foreground="black", font=("Helvetica", 15), cursor="arrow")
 
-
+        # Ubicar la pantalla en la ventana
+        self.vars.grid(row=0, column=15, columnspan=9, padx=(5, 5), pady=0, sticky='WSNE')
 
         # Agregar la pantalla donde se irán mostrando los cálculos hacia atras
         self.pantalla2 = Text(self.frame, state="disabled", width=50, height=altura, background="lightgoldenrod4",
@@ -89,12 +78,7 @@ class Interfaz(Frame):
         # Ubicar la pantalla en la ventana
         self.pantalla2.grid(row=1, column=0, columnspan=15, padx=(5, 5), pady=0, sticky='WSNE')
 
-        # Agregar una pantalla lateral donde ver las variables y poder seleccionarlas
 
-        self.vars = Text(self.frame, state="disabled", width=3, height=altura, background="lightgoldenrod2",
-                         foreground="black", font=("Helvetica", 15), cursor="arrow")
-        # Ubicar la pantalla en la ventana
-        self.vars.grid(row=0, column=15, columnspan=9, padx=(5, 5), pady=0, sticky='WSNE')
 
         # Agregar una pantalla lateral donde ver el estado de la demostración
 
@@ -105,9 +89,9 @@ class Interfaz(Frame):
 
         # Agregar una caja de texto para que sea la previa de la calculadora, state es disabled para que el texto se
         # introduzca por raton
+
         self.previa = Text(self.frame, state="disabled", width=10, height=2.5, background="lightgoldenrod1",
                            foreground="black", font=("Helvetica", 15), cursor="arrow")
-
         # Ubicar la previa en la ventana
         self.previa.grid(row=2, column=0, columnspan=24, padx=5, pady=5, sticky='WSNE')
 
@@ -123,10 +107,10 @@ class Interfaz(Frame):
         boton1 = self.crearBoton("P2"+conjuncion+"P1" + "i")
         boton2 = self.crearBoton(conjuncion + "e1")
         boton3 = self.crearBoton(conjuncion+ "e2")
-        boton4 =  self.crearBoton(implicacion+ "e")
+        boton4 = self.crearBoton(implicacion+ "e")
         boton5 = self.crearBoton("(", escribir=True)
-        boton6 =  self.crearBoton(")", escribir=True)
-        boton7 =  self.crearBoton(u"\u232B") # retroceso
+        boton6 = self.crearBoton(")", escribir=True)
+        boton7 = self.crearBoton(u"\u232B") # retroceso
         #Fila 2
         boton8 = self.crearBoton(disyuncion+"i1")
         boton9 =  self.crearBoton(disyuncion+"i2")
@@ -150,8 +134,6 @@ class Interfaz(Frame):
         botones = [boton0, boton1, boton2, boton3, boton4, boton5, boton6,
                    boton7, boton8, boton9, boton10, boton11, boton12, boton13,
                    boton14, boton15, boton16, boton17, boton18, boton19, boton20, boton21,boton22,boton23,boton24]
-
-
         contador = 0
         while contador < 8:
 
@@ -186,8 +168,13 @@ class Interfaz(Frame):
             self.limpiarprevia()
             self.mostrarEnprevia(self.tprevia)
 
+        elif texto == u"\u232B":
+            self.tprevia = self.tprevia[:-1]
+            self.limpiarprevia()
+            self.mostrarEnprevia(self.tprevia)
+
         elif texto == cuadrado +" Abrir":
-            self.asunciones.une(log.traductor((self.sus(self.tprevia)))) #Añado a mi acumulador la premisa asumida
+            self.asunciones.une(log.traductor((self.sus(self.tprevia))))
             self.textopantalla +=["#"+"------"+"-"*2*self.asmpt+"# "+str(self.asmpt)]
             self.historial1.une(log.traductor((self.sus(self.tprevia))))
             self.textopantalla += [(log.traductor((self.sus(self.tprevia))))]
@@ -215,13 +202,13 @@ class Interfaz(Frame):
                 self.asmpt += -1
                 self.textopantalla += ["#"+"------"+"-"*2*self.asmpt+"# "+str(self.asmpt)]
                 self.textopantalla += [nueva]
-                del(self.asunciones[-1]) #Esto convierte premisas en listas
+                del(self.asunciones[-1]) 
                 self.limpiarprevia()
                 self.tprevia = ""
                 self.limpiarPantalla()
                 self.actualizapantalla(self.textopantalla)
 
-                #ERROR: NO SE VAN LOS CUADRADITOS Y SE VINCULAN MALAMENTE
+
 
 
         elif texto == conjuncion+"e1":
@@ -384,7 +371,7 @@ class Interfaz(Frame):
                         self.actualizapantalla(self.textopantalla2, True)
 
 
-        elif texto == disyuncion+"e": #Hay que arreglar el problema de orden
+        elif texto == disyuncion+"e":
             if self.selector_lado():
                 seleccion = self.selector()
                 if len(seleccion) == 3:
@@ -661,10 +648,7 @@ class Interfaz(Frame):
 
 
 
-        elif texto == u"\u232B":  # borrar en previa
-            self.tprevia = self.tprevia[:-1]
-            self.limpiarprevia()
-            self.mostrarEnprevia(self.tprevia)
+
             # comprobamos si ha terminado
 
         if self.asmpt == 0:
@@ -714,6 +698,8 @@ class Interfaz(Frame):
         self.pantalla2.configure(state="normal")
         self.pantalla2.delete("1.0", END)
         self.pantalla2.configure(state="disabled")
+        for i in self.checkbox2.items():
+            i[1].destroy()
         return
 
     def limpiarEstado(self):
@@ -757,7 +743,7 @@ class Interfaz(Frame):
         return
 
     @staticmethod
-    def sus(texto): #para facilitar el cambio de caracteres
+    def sus(texto):
         s = re.sub(negacion,"¬",texto)
         s = re.sub(conjuncion,"&",s)
         s = re.sub(disyuncion,"|",s)
@@ -767,15 +753,10 @@ class Interfaz(Frame):
     #Nos refresca las premisas que tenemos actualmente
 
     def selector(self, conclusion = False):
-        """
-
-        :return: devuelve una lista de 0`s y 1's correspondiente a 0 si ese boton no esta pulsado y 1 si si lo esta
-        y añade las premisas correspondientes a la lista
-        """
         if not conclusion:
             seleccion = []
             j = 0
-            for premisa in self.variables.values(): #Esto nos da una lista de que botones esta pulsados
+            for premisa in self.variables.values():
                 if premisa.get() != 0:
                     seleccion.append(j)
                 j += 1
@@ -783,13 +764,13 @@ class Interfaz(Frame):
         else:
             seleccion = []
             j = 0
-            for premisa in self.variables2.values():  # Esto nos da una lista de que botones están pulsados
+            for premisa in self.variables2.values():
                 if premisa.get() != 0:
                     seleccion.append(j)
                 j += 1
             return seleccion
-    def selector_lado(self):
 
+    def selector_lado(self):
         if all(map(lambda x: x.get()==0, self.variables.values())) and \
                 all(map(lambda x: x.get() == 0, self.variables2.values())):
             self.limpiarprevia()
@@ -802,11 +783,12 @@ class Interfaz(Frame):
                 all(map(lambda x: x.get() == 0, self.variables2.values())):
             return True
         else:
-            raise Exception("Solo puedes escoger premisas en un lado")
+            self.limpiarprevia()
+            self.tprevia = ""
+            self.mostrarEnprevia("Solo puedes escoger premisas de un lado")
 
     def actualizapantalla(self, lineas, inversa=False):
         if not inversa:
-            #Aqui escribo en pantalla las lineas
             self.variables = {}
             self.checkbox = {}
             for i in lineas:
@@ -816,9 +798,6 @@ class Interfaz(Frame):
                                                          variable = self.variables[i])
                 self.mostrarEnpantalla(i,self.checkbox[i] if not isinstance(i,str) else None)
                 self.mostrarEnpantalla("\n")
-            #Aqui preparo los diccionarios y botones para usar en las fórmulas
-
-
         else:
             self.variables2 = {}
             self.checkbox2 = {}
@@ -827,7 +806,6 @@ class Interfaz(Frame):
                     self.variables2[i] = IntVar()
                     self.checkbox2[i] = Checkbutton(self.pantalla2, text="", bg="lightgoldenrod4",
                                                           variable=self.variables2[i])
-
                 self.mostrarEnpantalla2(i,self.checkbox2[i] if not isinstance(i,str) else  None)
                 self.mostrarEnpantalla2("\n")
 
@@ -853,6 +831,8 @@ class Interfaz(Frame):
         self.tprevia = ""  # texto que está en la previa
         self.historial1 = self.copiaH1 # Lleva un registro de las premisas hasta ahora, hacia delante, es un objeto Premisa
         self.historial2 = Premisas(self.copiaH2)  # Lleva un registro de las premisas hacia atrás
+        self.copiaH1= deepcopy(self.copiaH1)
+        self.copiaH2 = deepcopy(self.copiaH2)
         self.objetivo = self.copiaObj  # La formulas que aun faltan por probar
         self.asmpt = 0  # contador de asunciones
         self.textopantalla = [i for i in self.historial1]  # una lista con los strings y Formulas a usar en pantalla
