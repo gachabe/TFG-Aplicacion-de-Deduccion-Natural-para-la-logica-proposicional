@@ -12,13 +12,11 @@ color = 'royal blue'
 
 class Gestor:
     def __init__(self, ventana):
-        # Inicializar la ventana con un título
         self.ventana = ventana
         self.Interfaz = Interfaz
         self.ventana.title("Gabrielle")
         self.frame = Frame(self.ventana,bg= color)
         self.frame.grid()
-
 
         self.label = Label(self.frame,text="Premisas",height=2,font=("Helvetica", 15),bg= color)
         self.label.grid(sticky="n", row = 0, column= 0, columnspan=5,padx =(5,5))
@@ -30,7 +28,7 @@ class Gestor:
         self.conc = Text(self.frame,  font=("Helvetica", 15), cursor="arrow", height=1)
         self.conc.grid(row=4, column = 0, columnspan=5,padx =(5,5))
 
-        b = Button(self.frame, text="Demostrar", command=self.mostrador, height=9)
+        b = Button(self.frame, text="Demostrar", command=self.intercambiar_pantalla, height=9)
         b.grid(row = 0, rowspan=10, column = 5, sticky="snew",padx =(0,5),pady=(5,5))
 
         b1 = self.creaboton(texto=disyuncion)
@@ -81,7 +79,7 @@ class Gestor:
     def escritoC(self):
         return ( (traductor(self.sus(self.conc.get('1.0',"end-1c")))))
 
-    def mostrador(self):
+    def intercambiar_pantalla(self):
         if self.conc.get("1.0","end-1c") != "" or "," in self.conc.get("1.0","end-1c") :
             self.frame.grid_forget()
             self.Interfaz(self.ventana,self.escritoP(), self.escritoC()).tkraise(self.frame)
