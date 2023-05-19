@@ -364,7 +364,7 @@ class Premisas:
 
         f = self.premisas[conclusion]
         if f.es_neg():
-                self.une(Formula(">",Formula("¬",f),premisaN))
+                self.une(Formula(">",f.izq,premisaN))
                 self.une(Formula("¬",premisaN))
                 return
         else:
