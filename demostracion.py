@@ -186,23 +186,25 @@ class Interfaz(Frame):
 
         elif texto == cuadrado +" Cerrar":
             if self.asmpt != 0:
-
                 nueva = Formula(">", self.asunciones[-1], self.historial1[-1])
                 self.historial1.intr_impl(self.asunciones[-1], self.historial1[-1])
                 estado = True
                 i = 1
                 while estado:
-                    if type(self.textopantalla[-i]) == str:
+                    if type(self.textopantalla[-i]) == str and (self.textopantalla[-i])[-1] == str(self.asmpt-1):
                         estado = False
+                    elif type(self.textopantalla[-i]) == str:
+                        print((self.textopantalla[-i])[-1])
+                        print(self.asmpt-1)
+                        i += 1
                     else:
-
                         del self.historial1[-2]
                         self.textopantalla[-i] = str(self.textopantalla[-i])
                         i += 1
                 self.asmpt += -1
                 self.textopantalla += ["#"+"------"+"-"*2*self.asmpt+"# "+str(self.asmpt)]
                 self.textopantalla += [nueva]
-                del(self.asunciones[-1]) 
+                del(self.asunciones[-1])
                 self.limpiarprevia()
                 self.tprevia = ""
                 self.limpiarPantalla()
