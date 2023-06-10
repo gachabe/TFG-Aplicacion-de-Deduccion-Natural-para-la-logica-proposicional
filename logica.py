@@ -7,10 +7,7 @@ Haremos esta definición de forma recursiva.
 
 """
 
-"Funciones básicas"
 def esVariable(var):
-
-
     """Comprueba si el string var es una variable,
      consideraremos como variables los caracteres a..z seguidos, o no, por
     un número"""
@@ -62,7 +59,6 @@ class Formula:
         elif esBinaria(self.raiz):
             return ''.join(map(str, ['(', self.izq, self.raiz,
                                      self.der, ')']))
-
     def __repr__(self):
         if esVariable(self.raiz) or esCte(self.raiz):
             return self.raiz
@@ -71,7 +67,6 @@ class Formula:
         elif esBinaria(self.raiz):
             return ''.join(map(str, ['(', self.izq, self.raiz,
                                      self.der, ')']))
-
     def __eq__(self, other):
         if esBinaria(self.raiz) and esBinaria(other.raiz):
             r = self.raiz == other.raiz
@@ -101,7 +96,6 @@ class Formula:
 
                 return recursivo_acum(f.izq, acum)
             else:
-
                 rizq = recursivo_acum(f.izq, acum)
                 return recursivo_acum(f.der, rizq)
         return list(set(recursivo_acum(self, [])))
@@ -134,8 +128,6 @@ class Premisas:
             self.premisas = [i for i in args]
         else:
             raise Exception("Algo salió mal,una de las premisas no era una fórmula")
-
-
     def __len__(self):
         return len(self.premisas)
 
@@ -179,15 +171,12 @@ class Premisas:
         f = self.premisas[premisa]
         if self.premisas[premisa].es_conj():
             return self.une(f.izq)
-
         else:
             raise Exception("Eso no era una conjunción")
+
     def elim_conj1_inv(self,conclusion,premisaN):
         f = self.premisas[conclusion]
         return self.une(Formula("&",f,premisaN))
-
-
-
 
     def elim_conj2(self, premisa):
         f = self.premisas[premisa]
@@ -206,9 +195,7 @@ class Premisas:
         f1 = self.premisas[p1]
         f2 = self.premisas[p2]
         return (Formula("&",f1,f2),Formula("&",f2,f1))
-
     def intr_conj_inv(self,conclusion):
-
         f = self.premisas[conclusion]
         if f.es_conj():
             self.une(f.izq)
@@ -257,7 +244,6 @@ class Premisas:
                     raise Exception("Error, premisa equivocada")
         else:
                 raise Exception("Error en las premisas")
-
 
     def elim_disy_inv(self,conclusion, conclusionN):
         if conclusionN.es_disy():
@@ -354,14 +340,13 @@ class Premisas:
     def modus_tollens(self,p1,p2):
         f1 = self.premisas[p1]
         f2 = self.premisas[p2]
-        if (f1.es_impl() and f2.es_neg() and f1.der == f2.izq) or \
-                (f2.es_impl() and f1.es_neg() and f2.der == f1.izq):
+        if (f1.es_impl() and f2.es_neg() and f1.der == f2.izq) or (f2.es_impl() and f1.es_neg() and f2.der == f1.izq):
             resultado = Formula("¬", f1.izq) if f1.es_impl() else Formula("¬", f2.izq)
             return self.une(resultado)
         else:
             raise Exception("No se puede aplicar Modus Tollens")
-    def modus_tollens_inv(self,conclusion,premisaN):
 
+    def modus_tollens_inv(self,conclusion,premisaN):
         f = self.premisas[conclusion]
         if f.es_neg():
                 self.une(Formula(">",f.izq,premisaN))
@@ -422,12 +407,10 @@ def buscarraizfinal(string):
             indice += 1
     return indice
 def traductor(formula):
-
     if len(formula) == 1:
         return Formula(formula)
     elif formula[0] == "¬":
         return Formula("¬", traductor(formula[1:]))
-
     elif formula[0] == "(" and formula[-1] == ")" and "(" in formula[1:-1]:
         nucleo = buscaraiz(formula[1:-1])
         return Formula(formula[nucleo+1], traductor(formula[1:nucleo+1]), traductor(formula[nucleo+2:-1]))

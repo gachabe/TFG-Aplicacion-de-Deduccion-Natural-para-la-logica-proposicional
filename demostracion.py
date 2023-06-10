@@ -32,8 +32,8 @@ class Interfaz(Frame):
             label='Reinicio', command=self.reinicio)
         self.menu.add_cascade(
             label="Opciones",
-            menu=self.opciones
-        )
+            menu=self.opciones)
+
         self.frame = Frame(self.ventana)
         self.frame.pack(side=TOP, fill=BOTH, expand=True)
         for i in range(6):
@@ -661,11 +661,11 @@ class Interfaz(Frame):
                 self.limpiarEstado()
                 self.mostrarEnestado("Hemos terminado")
             else:
-
                 self.limpiarEstado()
                 for i in self.objetivo:
                     self.mostrarEnestado(i)
                     self.mostrarEnestado("\n")
+                    
 
     def crearBotonVariable(self, valor, escribir=True, ancho=5, alto=1):
         return Button(self.vars, text=valor, width=ancho, height=alto, font=("Helvetica", 15),
@@ -683,11 +683,9 @@ class Interfaz(Frame):
         self.previa.configure(state="normal")
         self.previa.delete("1.0", END)
         self.previa.configure(state="disabled")
-
         return
 
     def limpiarPantalla(self):
-
         self.pantalla.configure(state="normal")
         self.pantalla.delete("1.0", END)
         self.pantalla.configure(state="disabled")
@@ -718,7 +716,6 @@ class Interfaz(Frame):
         return
 
     def mostrarEnpantalla(self, valor,boton = None):
-
         self.pantalla.configure(state="normal")
         self.pantalla.insert(END, valor)
         self.pantalla.window_create(END,window = boton,align = "top")
@@ -807,7 +804,7 @@ class Interfaz(Frame):
                 if not isinstance(i, str):
                     self.variables2[i] = IntVar()
                     self.checkbox2[i] = Checkbutton(self.pantalla2, text="", bg="lightgoldenrod4",
-                                                          variable=self.variables2[i])
+                                                    variable=self.variables2[i])
                 self.mostrarEnpantalla2(i,self.checkbox2[i] if not isinstance(i,str) else  None)
                 self.mostrarEnpantalla2("\n")
 
