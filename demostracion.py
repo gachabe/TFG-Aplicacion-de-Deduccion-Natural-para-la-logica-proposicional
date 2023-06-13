@@ -665,7 +665,7 @@ class Interfaz(Frame):
                 for i in self.objetivo:
                     self.mostrarEnestado(i)
                     self.mostrarEnestado("\n")
-                    
+
 
     def crearBotonVariable(self, valor, escribir=True, ancho=5, alto=1):
         return Button(self.vars, text=valor, width=ancho, height=alto, font=("Helvetica", 15),
@@ -852,18 +852,3 @@ class Interfaz(Frame):
 
 
 
-#p = Premisas(Formula("p"),Formula(">",Formula("p"),Formula(">",Formula("q"),Formula("r"))),Formula("¬",Formula("r")))
-
-#c =Formula("&",(Formula("¬", Formula("¬", Formula("p")))),Formula("r"))
-#p = Premisas(Formula("&",Formula("p"),Formula("q")),Formula("r"))
-#p = Premisas(Formula("¬", Formula("¬", Formula("&",Formula("q"),Formula("r")))),Formula("p"))
-#c = Formula("&",Formula("q"),Formula("r"))
-#p = Premisas(Formula(">",Formula("q"),Formula("r")),Formula("q"))
-#c =Formula("¬",Formula("q"))
-#p = Premisas()
-p = Premisas()
-c = log.traductor("(p>(q>p))")
-
-#ventana_principal = Tk()
-#calculadora = Interfaz(ventana_principal, p, c)
-#ventana_principal.mainloop()
